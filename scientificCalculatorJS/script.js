@@ -6,7 +6,7 @@ document.onclick = (event) => {
  * List of operators in order of decreasing precedence
  */
 const operators = [
-  "~", // Negation 
+  "~", // Negation
   "!",
   "cos",
   "sin",
@@ -27,7 +27,7 @@ const operators = [
   "-",
 ];
 /**
- * List of unary operators in order of decreasing precedence 
+ * List of unary operators in order of decreasing precedence
  */
 const unary_operators = [
   "~",
@@ -78,6 +78,9 @@ document.onkeydown = (event) => {
   } else if (key == "Backspace") {
     backspace();
     updateOutput();
+  } else if(key == "clear"){
+    clear();
+    updateOutput();
   }
 };
 
@@ -90,9 +93,9 @@ previous.onclick = (_) => {
 };
 
 /**
-* Performs an operation based on pressed button
-* @param {String} button_type
-*/
+ * Performs an operation based on pressed button
+ * @param {String} button_type
+ */
 function button(button_type) {
   console.log(button_type);
 
@@ -102,6 +105,10 @@ function button(button_type) {
       break;
     case "backspace":
       backspace();
+      updateOutput();
+      break;
+    case "clear":
+      clear();
       updateOutput();
       break;
     default:
@@ -117,8 +124,8 @@ function button(button_type) {
 }
 
 /**
-* Evaluates input and displays answer
-*/
+ * Evaluates input and displays answer
+ */
 function equals() {
   let answer;
   try {
@@ -138,41 +145,43 @@ function equals() {
 }
 
 /**
-* Deletes last element in the mathematical expression
-*/
+ * Deletes last element in the mathematical expression
+ */
 function backspace() {
   if (inputElements.length > 0) {
     inputElements.pop();
   }
 }
+function clear() {
+  inputElements = [];
+  previousInputElements = [];
+}
 
 /**
-* @param {Array<String>} arrayElements Array of elements to be converted to string
-* @returns {String} a string representation of the `inputElements` expression
-*/
+ * @param {Array<String>} arrayElements Array of elements to be converted to string
+ * @returns {String} a string representation of the `inputElements` expression
+ */
 function stringifyArray(arrayElements) {
   if (arrayElements.length == 0) {
     return "";
   } else {
-    return arrayElements.reduce(
-      (prev = "", curr) => prev + curr.toString()
-    );
+    return arrayElements.reduce((prev = "", curr) => prev + curr.toString());
   }
 }
 
 /**
-* Updates the output pane of the program
-*/
+ * Updates the output pane of the program
+ */
 function updateOutput() {
   previous.innerText = stringifyArray(previousInputElements);
   input.innerText = stringifyArray(inputElements);
 }
 
 /**
-* Converts the input from the user, which is supposed to be in
-* infix notation, into postfix notation for easier evaluation
-* @returns {Array<String, Number>} Postfix expression
-*/
+ * Converts the input from the user, which is supposed to be in
+ * infix notation, into postfix notation for easier evaluation
+ * @returns {Array<String, Number>} Postfix expression
+ */
 function infixToPostfix() {
   let expression = [...inputElements];
 
@@ -195,10 +204,7 @@ function infixToPostfix() {
 
       // Since the inputElements array stores digits of numbers as individual characters
       // in a string, they all have to be concatenated together into one string
-      while (
-        i != expression.length - 1 &&
-        /\d|\./.test(expression[i + 1])
-      ) {
+      while (i != expression.length - 1 && /\d|\./.test(expression[i + 1])) {
         i += 1;
         num += expression[i];
       }
@@ -293,22 +299,22 @@ function infixToPostfix() {
   return result;
 }
 /**
-* Returns true if the first argument has a higher precedence
-* than the second argument
-* @param {String} first First operand
-* @param {String} second Second operand
-* @returns {Boolean} `true` or `false`
-*/
+ * Returns true if the first argument has a higher precedence
+ * than the second argument
+ * @param {String} first First operand
+ * @param {String} second Second operand
+ * @returns {Boolean} `true` or `false`
+ */
 function hasHigherPrecedence(first, second) {
   return operators.indexOf(first) < operators.indexOf(second);
 }
 
 /**
-* Evaluates the postfix expression as produced by the
-* `infixToPostfix` function
-* @param {Array<String, Number>} expression Postfix expression
-* @returns {Number} Resulting value or answer
-*/
+ * Evaluates the postfix expression as produced by the
+ * `infixToPostfix` function
+ * @param {Array<String, Number>} expression Postfix expression
+ * @returns {Number} Resulting value or answer
+ */
 function evaluatePostfix(expression) {
   // this console.log could be removed. Just placed it here
   // so I could see the values everytime I ran the program
@@ -338,12 +344,12 @@ function evaluatePostfix(expression) {
 }
 
 /**
-* Used by the `evaluatePostfix` function to perform individual operations
-* @param {String} operator
-* @param {Number} operand2
-* @param {Number} operand1
-* @returns {Number} Result of the operation
-*/
+ * Used by the `evaluatePostfix` function to perform individual operations
+ * @param {String} operator
+ * @param {Number} operand2
+ * @param {Number} operand1
+ * @returns {Number} Result of the operation
+ */
 function operation(operator, operand2, operand1 = 0) {
   if (operator == "+") {
     return operand1 + operand2;
@@ -393,10 +399,10 @@ function operation(operator, operand2, operand1 = 0) {
 }
 
 /**
-* Returns factorial of `n`
-* @param {Number} n Input number
-* @returns {Number} Factorial of `n`
-*/
+ * Returns factorial of `n`
+ * @param {Number} n Input number
+ * @returns {Number} Factorial of `n`
+ */
 function factorial(n) {
   if (n < 0)
     throw new TypeError("Cannot find factorial of negative number: " + n);
